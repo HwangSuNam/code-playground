@@ -16,7 +16,7 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 # Configuration
-REGION="us-east-1"
+REGION="ap-northeast-2"
 PROJECT_NAME="code-playground"
 
 # Print colored output
@@ -57,10 +57,10 @@ check_prerequisites() {
         exit 1
     fi
 
-    # Check if user has updated the placeholder values
-    if grep -q "YOUR_ACCOUNT_ID\|CHANGE_ME" deploy/terraform.tfvars; then
+    # Check if user has updated the placeholder values (ignore comment lines)
+    if grep -v '^[[:space:]]*#' deploy/terraform.tfvars | grep -q "YOUR_ACCOUNT_ID\|CHANGE_ME"; then
         print_warning "Please update placeholder values in deploy/terraform.tfvars:"
-        grep -n "YOUR_ACCOUNT_ID\|CHANGE_ME" deploy/terraform.tfvars || true
+        grep -nv '^[[:space:]]*#' deploy/terraform.tfvars | grep "YOUR_ACCOUNT_ID\|CHANGE_ME" || true
         print_error "Update the configuration before proceeding."
         exit 1
     fi

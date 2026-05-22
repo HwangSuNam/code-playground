@@ -53,7 +53,12 @@ COPY --from=builder /app/.next/static ./.next/static
 
 # Entrypoint 스크립트 복사
 COPY docker-entrypoint.sh ./
-RUN chmod +x docker-entrypoint.sh
+
+RUN apk add --no-cache dos2unix \
+    && dos2unix docker-entrypoint.sh \
+    && chmod +x docker-entrypoint.sh \
+    && ls -l /app \
+    && od -c docker-entrypoint.sh | head
 
 # 권한 설정
 RUN chown -R nextjs:nodejs /app
@@ -72,7 +77,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD node healthcheck.js
 
 # 엔트리포인트 설정
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 
 # 애플리케이션 실행
 CMD ["node", "server.js"]

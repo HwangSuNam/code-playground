@@ -45,27 +45,8 @@ data "aws_subnet" "public" {
   id    = data.aws_subnets.public.ids[count.index]
 }
 
-# Route Table for Public Subnets
-resource "aws_route_table" "public" {
-  vpc_id = data.aws_vpc.main.id
-
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = data.aws_internet_gateway.main.id
-  }
-
-  tags = {
-    Name = "${var.project_name}-public-rt"
-    Environment = var.environment
-  }
-}
-
-# Route Table Association for Public Subnets
-resource "aws_route_table_association" "public" {
-  count          = length(data.aws_subnet.public)
-  subnet_id      = data.aws_subnet.public[count.index].id
-  route_table_id = aws_route_table.public.id
-}
+# Note: Default VPC already has a main route table with internet gateway routing.
+# No need to create a separate route table or associations for public subnets.
 
 # Note: Using public subnets only for simplicity
 # NAT Gateway and private subnets removed as default VPC doesn't have private subnets

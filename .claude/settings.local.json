@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(docker compose:*)",
+      "Bash(xargs docker:*)",
+      "Bash(docker run:*)",
+      "Bash(terraform plan *)",
+      "Bash(terraform apply *)"
+    ]
+  }
+}

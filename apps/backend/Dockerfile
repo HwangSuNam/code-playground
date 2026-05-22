@@ -18,7 +18,10 @@ COPY gradle gradle/
 COPY build.gradle settings.gradle checkstyle.xml ./
 
 # Make gradlew executable
-RUN chmod +x ./gradlew
+# RUN chmod +x ./gradlew
+RUN sed -i 's/\r$//' gradlew && chmod +x gradlew
+RUN ./gradlew --version
+RUN ./gradlew dependencies --no-daemon
 
 # Download dependencies (separate layer for better caching)
 RUN ./gradlew dependencies --no-daemon

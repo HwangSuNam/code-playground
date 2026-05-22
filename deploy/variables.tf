@@ -100,13 +100,13 @@ variable "backend_image" {
 variable "backend_cpu" {
   description = "Backend CPU units"
   type        = number
-  default     = 1024
+  default     = 2048
 }
 
 variable "backend_memory" {
   description = "Backend memory in MB"
   type        = number
-  default     = 2048
+  default     = 4096
 }
 
 variable "backend_desired_count" {
